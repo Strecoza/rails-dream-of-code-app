@@ -16,7 +16,7 @@ CodingClass.find_each do |coding_class|
     #1. Added to mentor model:
         #has_many :mentor_enrollment_assignments
         #has_many :enrollments, through: :mentor_enrollment_assignments 
-        Mentor.all.find{:enrollments.count <= 2 } 
+  Mentor.all.find { |m| m.enrollments.count <= 2 }
     #2. Mentor.all.find{mentor.enrollments.count <= 2 }
     #3 added to enrollment model:      has_one :mentor, through: :mentor_enrollment_assignments
         Mentor.all.find do |mentor|

@@ -1,1 +1,46 @@
-<h1>Dashboard</h1>
+<h1>Admin Dashboard</h1>
+<section>
+    <h2>Current courses</h2>
+
+    <% if @current_trimester.present? %>
+        <h3><%= "#{@current_trimester.term} - #{@current_trimester.year}" %></h3>
+
+        <% if @current_courses.any? %>
+            <ul>
+                <% @current_courses.each do |course| %>
+                    <li><%= link_to course.title, course_path(course) %></li>
+                <% end %>
+            </ul>
+        <% else %>
+            <p>No courses in the current trimester yet.</p>
+        <% end %>
+    <% else %>
+        <p> No current trimester.</p>
+    <% end %>
+
+</section>
+
+
+<section style="margin-top: 1 rem;">
+   <h2>Upcoming courses</h2>
+
+   <% if @upcoming_courses.any? %>
+         <h3><%= "#{@upcoming_trimester.term} - #{@upcoming_trimester.year}" %></h3>
+
+        <% if @upcoming_courses.any? %>
+            <ul>
+                <% @upcoming_courses.each do |course| %>
+                    <li><%= link_to course.title, course_path(course) %></li>
+                <% end %>
+            </ul>
+        <% else %>
+            <p>No courses in the upcoming trimester yet.</p>
+        <% end %>
+   <% else %>
+        <p>No upcoming courses</p>
+    <% end %>
+</section>
+
+<!-- Link to create new course -->
+<p><%= link_to "Add a new course", new_course_path %></p>
+

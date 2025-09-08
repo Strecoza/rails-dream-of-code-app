@@ -1,0 +1,16 @@
+<h1><%= @course.coding_class.title %></h1>
+
+<p><strong>Trimester:</strong> <%= "#{@course.trimester.term} - #{@course.trimester.year}" %></p>
+
+<h2>Enrolled students</h2>
+<% names = @course.student_name_list %>
+<% if names.any? %>
+  <ul>
+    <% names.each do |full_name| %>
+      <li><%= full_name %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No students enrolled yet.</p>
+<% end %>
+

@@ -2,6 +2,14 @@
 
 <h1>New enrollment</h1>
 
+<% if @enrollment.course_id.present? %>
+  <% course = Course.includes(:coding_class, :trimester).find(@enrollment.course_id) %>
+  <p>
+    <strong><%= course.coding_class.title %></strong>
+     (<%= "#{course.trimester.term} #{course.trimester.year}" %>)
+  </p>
+<% end %>
+
 <%= render "form", enrollment: @enrollment %>
 
 <br>

@@ -24,6 +24,8 @@
 
   <p><%= link_to "New enrollment", new_enrollment_path(course_id: @course.id) %></p>
 
+  <p><%= link_to "New submission", new_course_submission_path(@course) %></p>
+
   <p>
     <strong>Max enrollment:</strong>
     <%= @course.respond_to?(:max_enrollment) ? @course.max_enrollment : nil %>

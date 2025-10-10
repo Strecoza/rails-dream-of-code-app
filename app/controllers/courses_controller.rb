@@ -15,10 +15,12 @@ class CoursesController < ApplicationController
   # GET /courses/new
   def new
     @course = Course.new
+    load_selects
   end
 
   # GET /courses/1/edit
   def edit
+    load_selects
   end
 
   # POST /courses or /courses.json
@@ -26,9 +28,11 @@ class CoursesController < ApplicationController
     @course= Course.new(course_params)
     respond_to do |format|
       if @course.save
+        # Redirect to the course page
         format.html { redirect_to @course, notice: "Course was successfully created." }
         format.json { render :show, status: :created, location: @course }
       else
+        load_selects
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @course.errors, status: :unprocessable_entity }
       end
@@ -42,6 +46,7 @@ class CoursesController < ApplicationController
         format.html { redirect_to @course, notice: "Course was successfully updated." }
         format.json { render :show, status: :ok, location: @course }
       else
+        load_selects
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @course.errors, status: :unprocessable_entity }
       end
@@ -67,6 +72,11 @@ class CoursesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def course_params
-      params.require(course).permit(:coding_class_id, :trimester_id, :max_enrollment )
+      params.require(:course).permit(:coding_class_id, :trimester_id, :max_enrollment )
+    end
+
+    def load_selects
+      @coding_classes = CodingClass.order(:title)
+      @trimesters = Trimester.order(:start_date)
     end
 end

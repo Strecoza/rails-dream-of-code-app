@@ -1,12 +1,15 @@
 class SubmissionsController < ApplicationController
-  # GET /submissions/new
+  #GET / courses/:course_id/submissions/new
   def new
-    @course = Course.find(params[:course_id])
+    @course = Course.includes(:lessons, enrollments: :student).find(params[:course_id])
     @submission = Submission.new
-    @enrollments # TODO: What set of enrollments should be listed in the dropdown?
-    @lessons # TODO: What set of lessons should be listed in the dropdown?
+    @enrollments = @course.enrollments.includes(:student).order('students.last_name, students.first_name') 
+  
+    @lessons = @course.lessons.order(:id) 
+    @mentors = Mentor.order(:last_name, :first_name)
   end
 
+  #POST /courses/:course_id/submissions
   def create
     @course = Course.find(params[:course_id])
     @submission = Submission.new(submission_params)
@@ -14,9 +17,10 @@ class SubmissionsController < ApplicationController
     if @submission.save
       redirect_to course_path(@course), notice: 'Submission was successfully created.'
     else
-      @enrollments # TODO: Set this up just as in the new action
-      @lessons # TODO: Set this up just as in the new action
-      render :new
+      @enrollments =@course.enrollments.includes(:student).order('students.last_name, students.first_name')
+      @lessons =@course.lessons.order(:id) 
+      @mentors =Mentor.order(:last_name, :first_name)
+      render :new, status: :unprocessable_entity
     end
   end
 

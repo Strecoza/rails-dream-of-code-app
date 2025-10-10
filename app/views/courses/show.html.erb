@@ -1,6 +1,34 @@
-<p style="color: green"><%= notice %></p>
+<div id="<%= dom_id @course %>">
+  <p>
+    <strong>Coding class:</strong>
+    <%= @course.coding_class.title %>
+  </p>
 
-<%= render @course %>
+  <p>
+    <strong>Trimester:</strong>
+    <%= "#{@course.trimester.term} #{@course.trimester.year}" %>
+  </p>
+
+  <strong>Enrolled students</strong>
+  <% names = @course.student_name_list %>
+  <% if names.any? %>
+    <ul>
+      <% names.each do |full_name| %>
+        <li><%= full_name %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No students enrolled yet.</p>
+  <% end %>
+
+
+  <p><%= link_to "New enrollment", new_enrollment_path(course_id: @course.id) %></p>
+
+  <p>
+    <strong>Max enrollment:</strong>
+    <%= @course.respond_to?(:max_enrollment) ? @course.max_enrollment : nil %>
+  </p>
+</div>
 
 <div>
   <%= link_to "Edit this course", edit_course_path(@course) %> |

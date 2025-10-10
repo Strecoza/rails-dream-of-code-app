@@ -8,6 +8,8 @@ class CoursesController < ApplicationController
 
   # GET /courses/1 or /courses/1.json
   def show
+    @course = Course.includes(:trimester, :coding_class, enrollments: :student)
+      .find(params[:id])
   end
 
   # GET /courses/new

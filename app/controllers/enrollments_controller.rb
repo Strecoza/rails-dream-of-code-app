@@ -13,6 +13,10 @@ class EnrollmentsController < ApplicationController
   # GET /enrollments/new
   def new
     @enrollment = Enrollment.new
+    @enrollment.course_id = params[:course_id] if params[:course_id].present?
+
+    @courses  = Course.includes(:coding_class).order(:id)  
+    @students = Student.order(:last_name, :first_name) 
   end
 
   # GET /enrollments/1/edit
@@ -25,9 +29,11 @@ class EnrollmentsController < ApplicationController
 
     respond_to do |format|
       if @enrollment.save
-        format.html { redirect_to @enrollment, notice: "Enrollment was successfully created." }
+        format.html { redirect_to course_path(@enrollment.course), notice: "Student enrolled." }
         format.json { render :show, status: :created, location: @enrollment }
       else
+        @courses  = Course.includes(:coding_class).order(:id)
+        @students = Student.order(:last_name, :first_name)
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @enrollment.errors, status: :unprocessable_entity }
       end
@@ -60,11 +66,11 @@ class EnrollmentsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_enrollment
-      @enrollment = Enrollment.find(params.expect(:id))
+      @enrollment = Enrollment.find(params(:id))
     end
 
     # Only allow a list of trusted parameters through.
     def enrollment_params
-      params.expect(enrollment: [ :course_id, :student_id, :final_grade ])
+      params.require(:enrollment).permit(:course_id, :student_id, :final_grade)
     end
 end

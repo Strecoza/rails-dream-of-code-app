@@ -24,6 +24,8 @@
 
   <p><%= link_to "New enrollment", new_enrollment_path(course_id: @course.id) %></p>
 
+  <p><%= link_to "New submission", new_course_submission_path(@course) %></p>
+
   <p>
     <strong>Max enrollment:</strong>
     <%= @course.respond_to?(:max_enrollment) ? @course.max_enrollment : nil %>
@@ -33,6 +35,5 @@
 <div>
   <%= link_to "Edit this course", edit_course_path(@course) %> |
   <%= link_to "Back to courses", courses_path %>
-
   <%= button_to "Destroy this course", @course, method: :delete %>
 </div>

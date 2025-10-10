@@ -1,4 +1,4 @@
-<%= form_with(model: course) do |form| %>
+<%= form_with(model: course, local: true) do |form| %>
   <% if course.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(course.errors.count, "error") %> prohibited this course from being saved:</h2>
@@ -10,23 +10,32 @@
       </ul>
     </div>
   <% end %>
-
+  
+  <!-- Dropdown to choose CodingClass -->
   <div>
-    <%= form.label :coding_class_id, style: "display: block" %>
-    <%= form.text_field :coding_class_id %>
+    <%= form.label :coding_class_id, "Coding class", style: "display: block" %>
+    <%= form.collection_select(:coding_class_id,
+          @coding_classes, :id, :title,
+          { prompt: "Select coding class" }) %>
   </div>
 
+  <!-- Dropdown for Trimester -->
   <div>
-    <%= form.label :trimester_id, style: "display: block" %>
-    <%= form.text_field :trimester_id %>
+    <%= form.label :trimester_id, "Trimester", style: "display: block" %>
+    <%= form.collection_select(
+          :trimester_id,
+          @trimesters, :id, :display_name,
+          { prompt: "Select trimester" }
+        ) %>
   </div>
 
-  <div>
+   <div style="margin-top: 1em;">
     <%= form.label :max_enrollment, style: "display: block" %>
-    <%= form.number_field :max_enrollment %>
+    <%= form.number_field :max_enrollment, class: "form-control" %>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <!-- Submit button -->
+  <div style ='margin-top: 1e;'>
+    <%= form.submit "Save Course", class: "btn btn-primary"%>
   </div>
 <% end %>

@@ -60,11 +60,11 @@ class CodingClassesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_coding_class
-      @coding_class = CodingClass.find(params[:id])
+      @coding_class = CodingClass.find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.
     def coding_class_params
-      params.require(:coding_class).permit( :title, :description )
+      params.expect(coding_class: [ :title, :description ])
     end
 end
